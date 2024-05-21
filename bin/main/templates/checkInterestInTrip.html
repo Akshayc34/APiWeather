@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        /* Your existing CSS styles */
+    </style>
+    <script>
+        function formatAndDisplayResult(result) {
+            const formattedResult = document.getElementById('formattedResult');
+            formattedResult.textContent = ''; // Clear previous content
+
+            const interests = result.interests;
+            let formattedOutput = '';
+            interests.forEach((interest) => {
+                formattedOutput += `Trip ID: ${interest.tripID}\n`;
+                formattedOutput += `User ID: ${interest.userID}\n\n`;
+            });
+
+            formattedResult.textContent = formattedOutput;
+        }
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/your-endpoint-url', {
+                    method: 'POST', // or 'GET' depending on your endpoint
+                    body: formData
+                    // Add headers or other configurations as needed
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+
+                const responseData = await response.json();
+                formatAndDisplayResult(responseData); // Update the displayed result
+            } catch (error) {
+                console.error('There was an error!', error);
+                // Handle error, display message, etc.
+            }
+        }
+    </script>
+</head>
+<body>
+<p><a href="/queryForTrip">Query For Trip</a></p>
+<p><a href="/proposeNewTrip">Propose New Trip</a></p>
+<p><a href="/expressInterestInTrip">Express Interest In Trip</a></p>
+<p><a href="/checkInterestInTrip">Check Interest In Trip</a></p>
+<p><a href="/logout">Logout</a></p>
+<h1>Check Interest In Trip</h1>
+<form onsubmit="handleSubmit(event)">
+    Select Trip:
+    <select id="tripId" name="tripId" required>
+        <option value="0" disabled>Select Trip</option>
+        <!-- Your options here -->
+    </select>
+    <input type="submit" value="Submit" />
+</form>
+<h1>Result</h1>
+<pre id="formattedResult"></pre>
+</body>
+</html>

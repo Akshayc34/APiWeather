@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head> 
+        <title>Getting Started: Serving Web Content</title> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p><a href="/queryForTrip">Query For Trip</a></p>
+        <p><a href="/proposeNewTrip">Propose New Trip</a></p>
+        <p><a href="/expressInterestInTrip">Express Interest In Trip</a></p>
+        <p><a href="/checkInterestInTrip">Check Interest In Trip</a></p>
+        <p><a href="/logout">Logout</a></p>
+        <h1>Express Interest In Trip</h1>
+        <p th:text="${result}" />
+        <form action="#" th:action="@{/submitExpressInterestInTrip}" th:object="${interestInTrip}" method="post">
+            Select Trip: <select id="tripId" name="tripId" required>
+                            <option value="0" disabled>Select Trip</option>
+                            <option th:each="option : ${options}" th:value="${option[0]}" th:text="${option[1]} + ' ( ' + ${option[2]} + ' to ' + ${option[3]} + ')'"></option>
+                        </select>
+            <input type="submit" value="Submit" />
+        </form>
+    </body>
+</html>
